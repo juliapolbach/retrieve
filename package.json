@@ -1,0 +1,40 @@
+{
+  "type": "module",
+  "name": "retrieve",
+  "version": "1.0.0",
+  "description": "Retrieve is a tool that helps you to generate quiz questions from custom content",
+  "main": "src/app.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.2",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.0.0",
+    "natural": "^8.0.1",
+    "openai": "^4.82.0",
+    "pino-pretty": "^13.0.0",
+    "tiktoken": "^1.0.19"
+  },
+  "scripts": {
+    "test": "mocha --node-env=test 'test/**/*.test.js'",
+    "test:watch": "mocha --watch test/**/*.test.js",
+    "test:coverage": "c8 --check-coverage --lines 100 npm test",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "Alfonso Huéscar & Júlia Polbach",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^11.1.0",
+    "nodemon": "^3.1.9",
+    "standard": "*"
+  },
+  "standard": {
+    "env": [
+      "mocha"
+    ]
+  }
+}
