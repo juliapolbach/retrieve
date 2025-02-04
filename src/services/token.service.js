@@ -1,9 +1,9 @@
-import { encoding_for_model } from 'tiktoken'
+import { encoding_for_model as encodingForModel } from 'tiktoken'
 
 export class TokenService {
   static calculateTokens (text, model = 'gpt-3.5-turbo') {
     try {
-      const encoder = encoding_for_model(model)
+      const encoder = encodingForModel(model)
       const tokens = encoder.encode(text)
       encoder.free()
       return tokens.length

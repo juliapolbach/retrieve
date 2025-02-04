@@ -1,5 +1,6 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
+import { questionsRoutes } from './routes/questions.routes.js'
 
 export async function buildApp (opts = {}) {
   const app = Fastify({
@@ -18,8 +19,7 @@ export async function buildApp (opts = {}) {
   })
 
   // Register route plugins
-  // await app.register(import('./routes/api/users/index.js'), { prefix: '/api/users' })
-  // await app.register(import('./routes/api/products/index.js'), { prefix: '/api/products' })
+  await app.register(questionsRoutes, { prefix: '/api/questions' })
 
   // Global error handler
   app.setErrorHandler((error, request, reply) => {

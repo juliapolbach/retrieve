@@ -19,9 +19,11 @@ export class NLPService {
                 For each question, provide:
                 1. The question text
                 2. The correct answer
-                3. For MCQs, provide 3 plausible distractors
-                4. The type of question
-                5. Difficulty level (easy, medium, hard)
+                3. The text that contains the correct answer
+                4. An explanation of why it is the correct answer
+                5. For MCQs, provide 3 plausible distractors
+                6. The type of question
+                7. Difficulty level (easy, medium, hard)
                 
                 Text: ${text}
                 
@@ -34,23 +36,28 @@ export class NLPService {
         messages: [
           {
             role: 'system',
-            content: 'You are a professional educator creating high-quality quiz questions. Format your response as JSON.'
+            content: 'You are a professional educator creating high-quality quiz questions. Format your response as JSON with a "questions" array.'
           },
           { role: 'user', content: prompt }
         ],
         response_format: { type: 'json_object' },
-        max_tokens: 1000 // Limit response tokens
-
+        max_tokens: 1000
       })
 
       // Calculate output tokens
       const responseText = completion.choices[0].message.content
-      const outputTokens = TokenService.calculateTokens(responseText, options.model)
+      console.log('GPT Response:', responseText) // Debug log
 
-      // Estimate cost
+      const outputTokens = TokenService.calculateTokens(responseText, options.model)
       const costEstimate = TokenService.estimateCost(inputTokens, outputTokens, options.model)
 
-      const questions = JSON.parse(responseText)
+      let questions
+      try {
+        questions = JSON.parse(responseText)
+      } catch (parseError) {
+        console.error('Failed to parse GPT response:', parseError)
+        questions = { questions: [] }
+      }
 
       return {
         questions: this.processGPTResponse(questions),
@@ -85,7 +92,12 @@ export class NLPService {
   }
 
   static processGPTResponse (gptQuestions) {
-    // Process and validate questions
+    // Check if gptQuestions exists and has the expected structure
+    if (!gptQuestions || !Array.isArray(gptQuestions.questions)) {
+      console.log('Received GPT response:', gptQuestions) // Debug log
+      return [] // Return empty array if no valid questions
+    }
+
     return gptQuestions.questions.map(q => ({
       ...q,
       id: Math.random().toString(36).substr(2, 9)
