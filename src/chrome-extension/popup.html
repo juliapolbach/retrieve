@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Question Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Question Generator</h2>
+    <div id="selectedText"></div>
+    <div class="options">
+      <label>
+        Number of questions:
+        <input type="number" id="questionCount" value="1" min="1" max="10">
+      </label>
+      <div class="question-types">
+        <label><input type="checkbox" value="mcq" checked> Multiple Choice</label>
+        <label><input type="checkbox" value="open" checked> Open Ended</label>
+        <label><input type="checkbox" value="tf" checked> True/False</label>
+      </div>
+    </div>
+    <button id="generateBtn">Generate Questions</button>
+    <div id="result"></div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
